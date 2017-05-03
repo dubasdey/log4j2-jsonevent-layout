@@ -5,14 +5,18 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TimeZone;
 
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext.ContextStack;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
+import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.AbstractStringLayout;
+import org.apache.logging.log4j.status.StatusLogger;
 
 /**
  * The Class JSONLog4j2Layout.
@@ -20,6 +24,9 @@ import org.apache.logging.log4j.core.layout.AbstractStringLayout;
 @Plugin(name = "JSONLog4j2Layout", category = "Core", elementType = "layout", printObject = true)
 public class JSONLog4j2Layout extends AbstractStringLayout {
 
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = StatusLogger.getLogger();
+	
 	/** The Constant VERSION. */
 	private static final String VERSION ="1";
 	
@@ -86,18 +93,29 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     /** The html safe. */
     private boolean htmlSafe = false;
     
+    /** The plain context map. */
+    private boolean plainContextMap = false;
+    
+    /** The user fields. */
+    private UserField[] userFields;
+	
+    
 	/**
 	 * Instantiates a new JSON log 4 j 2 layout.
 	 *
 	 * @param locationInfo the location info
 	 * @param singleLine the single line
 	 * @param htmlSafe the html safe
+	 * @param plainContextMap the plain context map
+	 * @param userFields the user fields
 	 * @param charset the charset
 	 */
-	protected JSONLog4j2Layout(boolean locationInfo,boolean singleLine,boolean htmlSafe, Charset charset) {
+	protected JSONLog4j2Layout(boolean locationInfo,boolean singleLine,boolean htmlSafe,boolean plainContextMap, UserField[] userFields, Charset charset) {
 		super(charset);
 		this.locationInfo = locationInfo;
 		this.singleLine = singleLine;
+		this.plainContextMap = plainContextMap;
+		this.userFields = userFields;
 		ISO_DATETIME_TIME_ZONE_FORMAT_WITH_MILLIS.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 	
@@ -107,20 +125,29 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
      * @param locationInfo the location info
      * @param singleLine the single line
      * @param htmlSafe the html safe
+     * @param plainContextMap the plain context map
      * @param charset the charset
+     * @param userFields the user fields
      * @return the JSON log 4 j 2 layout
      */
     @PluginFactory
     public static JSONLog4j2Layout createLayout(
+    	// @formatter:off
     		@PluginAttribute("locationInfo") boolean locationInfo,
     		@PluginAttribute("singleLine") boolean singleLine,
-    		@PluginAttribute("htmlSafe") boolean htmlSafe,    		
-    		@PluginAttribute("charset") Charset charset ) {
+    		@PluginAttribute("htmlSafe") boolean htmlSafe,
+    		@PluginAttribute("plainContextMap") boolean plainContextMap, 
+    		@PluginAttribute("charset") Charset charset,
+    		@PluginElement("UserField") UserField[] userFields
+    	// @formatter:on
+    	) {
     	
     	if(charset == null){
     		charset = Charset.forName("UTF-8");
     	}
-        return new JSONLog4j2Layout(locationInfo,singleLine,htmlSafe,charset);
+    	
+    	LOGGER.debug("Creating JSONLog4j2Layout {}",charset);
+        return new JSONLog4j2Layout(locationInfo, singleLine, htmlSafe, plainContextMap, userFields, charset);
     }
     
     /**
@@ -130,6 +157,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
      * @return the string
      */
     private String cleanJSON(String value){
+    	LOGGER.debug("cleanJSON {}",value);
     	if(value == null){
     		return "";
     	}else{
@@ -227,7 +255,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
      * @param comma the comma
      */
     private void addField(StringBuilder builder,String key,Object value,boolean comma){
-    	
+    	LOGGER.debug("addField {}={} ({})",key,value,comma);
     	if(value == null){
     		builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS).append(ENTITY_SEP).append(ENTITY_SEP);
     		
@@ -285,6 +313,21 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
         return hostName;
     }
     
+    /**
+     * Gets the host IP.
+     *
+     * @return the host IP
+     */
+    private String getHostIP(){
+    	String hostName = "unknown-address"; 
+        try {
+            hostName = java.net.InetAddress.getLocalHost().getHostAddress();
+        } catch (Exception e) {
+            /* Ignored */
+        }
+        return hostName;
+    }
+    
 	/* (non-Javadoc)
 	 * @see org.apache.logging.log4j.core.Layout#toSerializable(org.apache.logging.log4j.core.LogEvent)
 	 */
@@ -299,10 +342,12 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
 	        
 	        if(event.getLevel()!=null){
 	        	addField(builder,"level", event.getLevel().name());
+	        	addField(builder,"level_int", event.getLevel().intLevel());
 	        }
 	        
 	        addField(builder,"thread_name", event.getThreadName());
 	        addField(builder,"source_host", getHostName());
+	        addField(builder,"source_ip", getHostIP());
 	        
 	        if(event.getMessage()!=null){
 	        	addField(builder,"message", event.getMessage().getFormattedMessage());
@@ -323,8 +368,20 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
 	        	addField(builder,"contextStack",event.getContextStack());
 	        }
 	        
-	        if(event.getContextStack()!=null) {
-	        	addField(builder,"contextMap",event.getContextMap());
+	        if(event.getContextMap()!=null) {
+	        	if(plainContextMap){
+	        		for(Entry<String,String> entry: event.getContextMap().entrySet()){
+	        			addField(builder,entry.getKey(),entry.getValue());
+	        		}
+	        	}else{
+	        		addField(builder,"contextMap",event.getContextMap());
+	        	}
+	        }
+	        
+	        if(userFields!=null){
+	        	for(UserField userField : userFields){
+	        		addField(builder,userField.getKey(),userField.getValue());
+	        	}
 	        }
         }
         addField(builder,"@version",VERSION,false);
