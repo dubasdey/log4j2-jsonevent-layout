@@ -20,3 +20,26 @@ Add the <JSONLog4j2Layout> to any appender.
 * UserField - Collection of user fields with __key__ and __value__ that will be printed in the LogEntry
 
 
+## Result Example
+
+```json
+{
+"@timestamp":"2017-05-03T15:46:34.393Z",
+"logger_name":"org.dummy.logger",
+"level":"DEBUG",
+"level_int":500,
+"thread_name":"DummyThread",
+"source_host":"IS28925X515817P",
+"source_ip":"180.113.65.21",
+"message":"Dummy Message Test with tab T\tT before here.",
+"contextStack":["Entry 1","Entry 2"],
+"contextMap":
+    [
+       {"X-Generator":"JSONLog2j2Layout"},
+       {"ThreadContextKey":"ThreadContextValue"}
+    ],
+"@version":"1"
+}
+```
+
+
