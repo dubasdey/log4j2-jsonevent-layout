@@ -8,9 +8,9 @@ Log4j2 JSON Event Layout without requirement of thirdparty libraries
 
 ## Usage
 
-Add the <JSONLog4j2Layout> to any appender.
+Add the `<JSONLog4j2Layout>` tag to any appender.
 
-## Attributes
+### Optional Attributes
 
 * locationInfo - Adds location info to the Trace
 * singleLine - Removes \r and \n in JSON String
