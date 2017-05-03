@@ -145,7 +145,11 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
      * @param comma the comma
      */
     private void addField(StringBuilder builder,String key,Object value,boolean comma){
-    	if(value instanceof String){
+    	
+    	if(value == null){
+    		builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS).append("''");
+    		
+    	}else if(value instanceof String){
     		builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS);
     		builder.append(ENTITY_SEP).append(cleanJSON(value.toString())).append(ENTITY_SEP);
     		
@@ -203,33 +207,41 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
 		StringBuilder builder = new StringBuilder();
 		
         builder.append(OBJ_S);
-        
         addField(builder,"@timestamp",ISO_DATETIME_TIME_ZONE_FORMAT_WITH_MILLIS.format(event.getTimeMillis()));
-        addField(builder,"logger_name", event.getLoggerName());
-        addField(builder,"level", event.getLevel().name());
-        addField(builder,"thread_name", event.getThreadName());
-        addField(builder,"source_host", getHostName());
-        addField(builder,"message", event.getMessage().getFormattedMessage());
         
-        if (event.getThrown() !=null){
-        	addField(builder,"exception",event.getThrown());
+        if(event!=null){
+	        addField(builder,"logger_name", event.getLoggerName());
+	        
+	        if(event.getLevel()!=null){
+	        	addField(builder,"level", event.getLevel().name());
+	        }
+	        
+	        addField(builder,"thread_name", event.getThreadName());
+	        addField(builder,"source_host", getHostName());
+	        
+	        if(event.getMessage()!=null){
+	        	addField(builder,"message", event.getMessage().getFormattedMessage());
+	        }
+	        
+	        if (event.getThrown() !=null){
+	        	addField(builder,"exception",event.getThrown());
+	        }
+	        
+	        if (locationInfo) {
+	        	 addField(builder,"file",event.getSource().getFileName());
+	        	 addField(builder,"line_number",event.getSource().getLineNumber());
+	        	 addField(builder,"class",event.getSource().getClassName());
+	        	 addField(builder,"method",event.getSource().getMethodName());
+	        }
+	        
+	        if(event.getContextStack()!=null) {
+	        	addField(builder,"contextStack",event.getContextStack());
+	        }
+	        
+	        if(event.getContextStack()!=null) {
+	        	addField(builder,"contextMap",getMap(event.getContextMap()));
+	        }
         }
-        
-        if (locationInfo) {
-        	 addField(builder,"file",event.getSource().getFileName());
-        	 addField(builder,"line_number",event.getSource().getLineNumber());
-        	 addField(builder,"class",event.getSource().getClassName());
-        	 addField(builder,"method",event.getSource().getMethodName());
-        }
-        
-        if(event.getContextStack()!=null) {
-        	addField(builder,"contextStack",event.getContextStack());
-        }
-        
-        if(event.getContextStack()!=null) {
-        	addField(builder,"contextMap",getMap(event.getContextMap()));
-        }
-
         addField(builder,"@version",VERSION,false);
         builder.append(OBJ_E);
 		return builder.toString();
