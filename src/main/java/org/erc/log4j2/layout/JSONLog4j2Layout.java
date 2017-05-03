@@ -133,35 +133,33 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     	if(value == null){
     		return "";
     	}else{
-	     	StringBuilder builder = new StringBuilder();
-	     	
-	     	if(singleLine){
-	     		value = value.replaceAll("\r", "");
-	     		value = value.replaceAll("\n", "");
-	     	}
-	     	
-	        int length = value.length();
-	        for (int i = 0; i < length; i++) {
-	          char c = value.charAt(i);
-	          String replacement = htmlSafe? HTML_SAFE_REPLACEMENT_CHARS[c]: REPLACEMENT_CHARS[c];
-	          if (replacement != null) {
-		          builder.append(replacement);
-		      }else{
-		    	  if(c =='\u2028'){
-			    	  builder.append("\\u2028");
-		    	  }else if (c =='\u2029'){
-			    	  builder.append("\\u2029");
-		    	  }else{
-			    	  builder.append(c);		    		  
-		    	  }
+    		StringBuilder builder = new StringBuilder();
 
-		      }
+    		if(singleLine){
+    			value = value.replaceAll("\r", "");
+    			value = value.replaceAll("\n", "");
+    		}
 
-	        }
-	        return builder.toString();
+    		int length = value.length();
+    		for (int i = 0; i < length; i++) {
+    			char c = value.charAt(i);
+    			String replacement = htmlSafe? HTML_SAFE_REPLACEMENT_CHARS[c]: REPLACEMENT_CHARS[c];
+    			if (replacement != null) {
+    				builder.append(replacement);
+    			}else{
+    				if(c =='\u2028'){
+    					builder.append("\\u2028");
+    				}else if (c =='\u2029'){
+    					builder.append("\\u2029");
+    				}else{
+    					builder.append(c);		    		  
+    				}
+    			}
+    		}
+    		return builder.toString();
     	}
     }
-    
+
     /**
      * Gets the stack trace.
      *
@@ -198,20 +196,24 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     private String getMap(Map<?, ?> map){
     	StringBuilder builder = new StringBuilder();
     	builder.append(LST_S);
-    	if(map!=null && !map.isEmpty()){
-    		for(Object key:map.keySet()){
-    			builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS);
-    			Object value = map.get(key);
-    			if(value!=null){
-    				builder.append(ENTITY_SEP).append( cleanJSON(value.toString()) ).append(ENTITY_SEP);	
-    			}else{
-    				builder.append(ENTITY_SEP).append(ENTITY_SEP);
-    			}
-    			builder.append(COMMA);
-    		}
-    	}
-    	builder.append(ENTITY_SEP).append("X-Generator").append(ENTITY_SEP).append(DOTS);
-    	builder.append(ENTITY_SEP).append("JSONLog2j2Layout").append(ENTITY_SEP);
+	    	if(map!=null && !map.isEmpty()){
+	    		for(Object key:map.keySet()){
+	    			builder.append(OBJ_S);
+		    			builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS);
+		    			Object value = map.get(key);
+		    			if(value!=null){
+		    				builder.append(ENTITY_SEP).append( cleanJSON(value.toString()) ).append(ENTITY_SEP);	
+		    			}else{
+		    				builder.append(ENTITY_SEP).append(ENTITY_SEP);
+		    			}
+	    			builder.append(OBJ_E);
+	    			builder.append(COMMA);
+	    		}
+	    	}
+			builder.append(OBJ_S);
+	    		builder.append(ENTITY_SEP).append("X-Generator").append(ENTITY_SEP).append(DOTS);
+	    		builder.append(ENTITY_SEP).append("JSONLog2j2Layout").append(ENTITY_SEP);
+			builder.append(OBJ_E);
     	builder.append(LST_E);
     	return builder.toString();
     }
@@ -327,6 +329,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
         }
         addField(builder,"@version",VERSION,false);
         builder.append(OBJ_E);
+        builder.append("\n");
 		return builder.toString();
 	}
 
