@@ -8,13 +8,21 @@ import org.junit.Test;
 public class JSONLog4j2LayoutTest {
 
 	@Test
-	public void testEvent(){
+	public void testEmptyEvent(){
+		JSONLog4j2Layout layout = new JSONLog4j2Layout(false,Charset.forName("UTF-8"));
+		LogEvent event = new DummyEmptyLogEvent();
+		String str = layout.toSerializable(event);
+		System.out.println(str);
+	}
+	
+	@Test
+	public void testFilledEvent(){
 		JSONLog4j2Layout layout = new JSONLog4j2Layout(false,Charset.forName("UTF-8"));
 		
-		LogEvent event = new DummyLogEvent();
+		LogEvent event = new DummyFilledLogEvent();
 		
 		String str = layout.toSerializable(event);
 		System.out.println(str);
 		
-	}
+	}	
 }
