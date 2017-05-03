@@ -32,6 +32,10 @@ Add the `<JSONLog4j2Layout>` tag to any appender.
 "source_host":"IS28925X515817P",
 "source_ip":"180.113.65.21",
 "message":"Dummy Message Test with tab T\tT before here.",
+"file":"File.java",
+"line_number":42,
+"class":"ClassName.class",
+"method":"MethodElement",
 "contextStack":["Entry 1","Entry 2"],
 "contextMap":
     [
