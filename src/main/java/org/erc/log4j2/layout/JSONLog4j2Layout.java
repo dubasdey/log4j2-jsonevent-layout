@@ -24,7 +24,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
 	private static final String VERSION ="1";
 	
 	/** The Constant ENTITY_SEP. */
-	private static final String ENTITY_SEP ="'";
+	private static final String ENTITY_SEP ="\"";
 	
 	/** The Constant OBJ_S. */
 	private static final String OBJ_S ="{";
@@ -47,6 +47,30 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -9204326215721954008L;
 
+	private static final String[] REPLACEMENT_CHARS;
+	private static final String[] HTML_SAFE_REPLACEMENT_CHARS;
+	
+	static {
+	    REPLACEMENT_CHARS = new String[128];
+	    for (int i = 0; i <= 0x1f; i++) {
+	      REPLACEMENT_CHARS[i] = String.format("\\u%04x", (int) i);
+	    }
+	    REPLACEMENT_CHARS['"'] = "\\\"";
+	    REPLACEMENT_CHARS['\\'] = "\\\\";
+	    REPLACEMENT_CHARS['\t'] = "\\t";
+	    REPLACEMENT_CHARS['\b'] = "\\b";
+	    REPLACEMENT_CHARS['\n'] = "\\n";
+	    REPLACEMENT_CHARS['\r'] = "\\r";
+	    REPLACEMENT_CHARS['\f'] = "\\f";
+	    
+	    HTML_SAFE_REPLACEMENT_CHARS = REPLACEMENT_CHARS.clone();
+	    HTML_SAFE_REPLACEMENT_CHARS['<'] = "\\u003c";
+	    HTML_SAFE_REPLACEMENT_CHARS['>'] = "\\u003e";
+	    HTML_SAFE_REPLACEMENT_CHARS['&'] = "\\u0026";
+	    HTML_SAFE_REPLACEMENT_CHARS['='] = "\\u003d";
+	    HTML_SAFE_REPLACEMENT_CHARS['\''] = "\\u0027";
+	}
+	  
     /** The Constant ISO_DATETIME_TIME_ZONE_FORMAT_WITH_MILLIS. */
     private static final DateFormat ISO_DATETIME_TIME_ZONE_FORMAT_WITH_MILLIS = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
@@ -78,14 +102,36 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
         return new JSONLog4j2Layout(locationInfo,charset);
     }
     
+  
+    
     /**
      * Clean JSON.
      *
      * @param jsonStr the json str
      * @return the string
      */
-    private String cleanJSON(String jsonStr){
-    	return jsonStr;
+    private String cleanJSON(String value){
+     	StringBuilder builder = new StringBuilder();
+    	builder.append(value);
+        int length = value.length();
+        for (int i = 0; i < length; i++) {
+          char c = value.charAt(i);
+          String replacement;
+          if (c < 128) {
+            replacement = HTML_SAFE_REPLACEMENT_CHARS[c];
+            if (replacement == null) {
+              continue;
+            }
+          } else if (c == '\u2028') {
+            replacement = "\\u2028";
+          } else if (c == '\u2029') {
+            replacement = "\\u2029";
+          } else {
+            continue;
+          }
+          builder.replace(i, i +1, replacement);
+        }
+        return builder.toString();
     }
     
     /**
@@ -121,13 +167,19 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
      * @param map the map
      * @return the map
      */
-    private String getMap(Map<String, String> map){
+    private String getMap(Map<?, ?> map){
     	StringBuilder builder = new StringBuilder();
     	builder.append(LST_S);
     	if(map!=null && !map.isEmpty()){
-    		for(String key:map.keySet()){
-    			builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS).append(ENTITY_SEP);
-    			builder.append( cleanJSON(map.get(key)) ).append(ENTITY_SEP).append(COMMA);
+    		for(Object key:map.keySet()){
+    			builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS);
+    			Object value = map.get(key);
+    			if(value!=null){
+    				builder.append(ENTITY_SEP).append( cleanJSON(value.toString()) ).append(ENTITY_SEP);	
+    			}else{
+    				builder.append(ENTITY_SEP).append(ENTITY_SEP);
+    			}
+    			builder.append(COMMA);
     		}
     	}
     	builder.append(ENTITY_SEP).append("X-Generator").append(ENTITY_SEP).append(DOTS);
@@ -147,7 +199,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     private void addField(StringBuilder builder,String key,Object value,boolean comma){
     	
     	if(value == null){
-    		builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS).append("''");
+    		builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS).append(ENTITY_SEP).append(ENTITY_SEP);
     		
     	}else if(value instanceof String){
     		builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS);
@@ -170,6 +222,9 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     		}
     		builder.append(LST_E);
     	
+    	} else if(value instanceof Map){
+    		builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS).append(getMap((Map<?,?>) value) );
+    		
     	} else if (value instanceof Throwable){
     		Throwable t = (Throwable) value;
     		builder.append(ENTITY_SEP).append(key).append(ENTITY_SEP).append(DOTS);
@@ -239,7 +294,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
 	        }
 	        
 	        if(event.getContextStack()!=null) {
-	        	addField(builder,"contextMap",getMap(event.getContextMap()));
+	        	addField(builder,"contextMap",event.getContextMap());
 	        }
         }
         addField(builder,"@version",VERSION,false);

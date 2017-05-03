@@ -25,7 +25,7 @@ public class DummyFilledLogEvent extends AbstractLogEvent{
 	@Override
 	public Message getMessage() {
 		FormattedMessageFactory factory = new FormattedMessageFactory();
-		return factory.newMessage("Dummy Message Test");
+		return factory.newMessage("Dummy Message Test with tab \t before here");
 	}
 	
 	@Override
