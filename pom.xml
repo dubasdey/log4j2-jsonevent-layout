@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.erc</groupId>
 	<artifactId>log4j2-jsonevent-layout</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	
 	<properties>
 		<java.version>6</java.version>
