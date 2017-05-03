@@ -5,7 +5,7 @@ jdk:
 deploy:
   provider: releases
   api_key: $GITAPI
-  file: "target/*.jar"
+  file: "target/log4j2-jsonevent-layout.jar"
   skip_cleanup: true
   on:
 tags: true
