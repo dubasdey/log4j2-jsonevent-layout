@@ -1,11 +1,11 @@
 package org.erc.log4j2.layout;
 
-
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.logging.log4j.ThreadContext.ContextStack;
 import org.apache.logging.log4j.core.LogEvent;
@@ -47,7 +47,10 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -9204326215721954008L;
 
+	/** The Constant REPLACEMENT_CHARS. */
 	private static final String[] REPLACEMENT_CHARS;
+	
+	/** The Constant HTML_SAFE_REPLACEMENT_CHARS. */
 	private static final String[] HTML_SAFE_REPLACEMENT_CHARS;
 	
 	static {
@@ -62,7 +65,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
 	    REPLACEMENT_CHARS['\n'] = "\\n";
 	    REPLACEMENT_CHARS['\r'] = "\\r";
 	    REPLACEMENT_CHARS['\f'] = "\\f";
-	    
+
 	    HTML_SAFE_REPLACEMENT_CHARS = REPLACEMENT_CHARS.clone();
 	    HTML_SAFE_REPLACEMENT_CHARS['<'] = "\\u003c";
 	    HTML_SAFE_REPLACEMENT_CHARS['>'] = "\\u003e";
@@ -77,61 +80,86 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     /** The location info. */
     private boolean locationInfo = false;
     
+    /** The single line. */
+    private boolean singleLine = false;
+    
+    /** The html safe. */
+    private boolean htmlSafe = false;
+    
 	/**
 	 * Instantiates a new JSON log 4 j 2 layout.
 	 *
 	 * @param locationInfo the location info
+	 * @param singleLine the single line
+	 * @param htmlSafe the html safe
 	 * @param charset the charset
 	 */
-	protected JSONLog4j2Layout(boolean locationInfo,Charset charset) {
+	protected JSONLog4j2Layout(boolean locationInfo,boolean singleLine,boolean htmlSafe, Charset charset) {
 		super(charset);
 		this.locationInfo = locationInfo;
+		this.singleLine = singleLine;
+		ISO_DATETIME_TIME_ZONE_FORMAT_WITH_MILLIS.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 	
     /**
      * Creates the layout.
      *
      * @param locationInfo the location info
+     * @param singleLine the single line
+     * @param htmlSafe the html safe
      * @param charset the charset
      * @return the JSON log 4 j 2 layout
      */
     @PluginFactory
     public static JSONLog4j2Layout createLayout(
     		@PluginAttribute("locationInfo") boolean locationInfo,
+    		@PluginAttribute("singleLine") boolean singleLine,
+    		@PluginAttribute("htmlSafe") boolean htmlSafe,    		
     		@PluginAttribute("charset") Charset charset ) {
-        return new JSONLog4j2Layout(locationInfo,charset);
+    	
+    	if(charset == null){
+    		charset = Charset.forName("UTF-8");
+    	}
+        return new JSONLog4j2Layout(locationInfo,singleLine,htmlSafe,charset);
     }
-    
-  
     
     /**
      * Clean JSON.
      *
-     * @param jsonStr the json str
+     * @param value the value
      * @return the string
      */
     private String cleanJSON(String value){
-     	StringBuilder builder = new StringBuilder();
-    	builder.append(value);
-        int length = value.length();
-        for (int i = 0; i < length; i++) {
-          char c = value.charAt(i);
-          String replacement;
-          if (c < 128) {
-            replacement = HTML_SAFE_REPLACEMENT_CHARS[c];
-            if (replacement == null) {
-              continue;
-            }
-          } else if (c == '\u2028') {
-            replacement = "\\u2028";
-          } else if (c == '\u2029') {
-            replacement = "\\u2029";
-          } else {
-            continue;
-          }
-          builder.replace(i, i +1, replacement);
-        }
-        return builder.toString();
+    	if(value == null){
+    		return "";
+    	}else{
+	     	StringBuilder builder = new StringBuilder();
+	     	
+	     	if(singleLine){
+	     		value = value.replaceAll("\r", "");
+	     		value = value.replaceAll("\n", "");
+	     	}
+	     	
+	        int length = value.length();
+	        for (int i = 0; i < length; i++) {
+	          char c = value.charAt(i);
+	          String replacement = htmlSafe? HTML_SAFE_REPLACEMENT_CHARS[c]: REPLACEMENT_CHARS[c];
+	          if (replacement != null) {
+		          builder.append(replacement);
+		      }else{
+		    	  if(c =='\u2028'){
+			    	  builder.append("\\u2028");
+		    	  }else if (c =='\u2029'){
+			    	  builder.append("\\u2029");
+		    	  }else{
+			    	  builder.append(c);		    		  
+		    	  }
+
+		      }
+
+	        }
+	        return builder.toString();
+    	}
     }
     
     /**
