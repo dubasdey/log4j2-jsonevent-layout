@@ -1,6 +1,8 @@
 package org.erc.log4j2.layout;
 
 import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
+import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 
 /**
  * The Class UserField.
@@ -112,4 +114,19 @@ public class UserField {
 		builder.append("]");
 		return builder.toString();
 	}
-}
+	
+	/**
+	 * Creates the User field.
+	 *
+	 * @param key the key
+	 * @param value the value
+	 * @return the user field
+	 */
+	@PluginFactory
+	public static UserField createUserField(
+			@PluginAttribute("key") String key,
+			@PluginAttribute("value") String value
+			){
+		return new UserField(key,value);
+	}
+} 
