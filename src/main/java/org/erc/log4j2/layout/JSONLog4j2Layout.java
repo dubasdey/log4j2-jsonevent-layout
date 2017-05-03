@@ -99,7 +99,6 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     /** The user fields. */
     private UserField[] userFields;
 	
-    
 	/**
 	 * Instantiates a new JSON log 4 j 2 layout.
 	 *
@@ -162,7 +161,6 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     		return "";
     	}else{
     		StringBuilder builder = new StringBuilder();
-
     		if(singleLine){
     			value = value.replaceAll("\r", "");
     			value = value.replaceAll("\n", "");
@@ -389,5 +387,4 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
         builder.append("\n");
 		return builder.toString();
 	}
-
 }

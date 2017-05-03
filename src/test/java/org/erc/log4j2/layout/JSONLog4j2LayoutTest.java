@@ -37,6 +37,18 @@ public class JSONLog4j2LayoutTest {
 	}
 	
 	/**
+	 * Test filled event.
+	 */
+	@Test
+	public void testFilledWithLocationEvent(){
+		JSONLog4j2Layout layout = new JSONLog4j2Layout(true,false,false,false,null,Charset.forName("UTF-8"));
+		DummyFilledLogEvent event = new DummyFilledLogEvent(SHORT_STRING);
+		event.setSource(new StackTraceElement("ClassName.class","MethodElement","File.java",42));
+		System.out.println(layout.toSerializable(event));
+	}
+	
+	
+	/**
 	 * Test filled multi line event.
 	 */
 	@Test
@@ -68,4 +80,34 @@ public class JSONLog4j2LayoutTest {
 		LogEvent event = new DummyFilledLogEvent(LONG_STRING);
 		System.out.println(layout.toSerializable(event));
 	}
+	
+	/**
+	 * Test filled multi line event.
+	 */
+	@Test
+	public void testFilledMultiLineWithUserFieldsAndContextMapEvent(){
+		UserField[] fields = new UserField[2];
+		fields[0] = new UserField("A1","B1");
+		fields[1] = new UserField("A2","B2");
+		JSONLog4j2Layout layout = new JSONLog4j2Layout(false,false,false,false,fields,Charset.forName("UTF-8"));
+		LogEvent event = new DummyFilledLogEvent(LONG_STRING);
+		event.getContextMap().put("CT1", "VALUE");
+		event.getContextMap().put("CT2", "VALUE");
+		System.out.println(layout.toSerializable(event));
+	}	
+	
+	/**
+	 * Test filled multi line event.
+	 */
+	@Test
+	public void testFilledMultiLineWithUserFieldsAndContextMapAsRootEvent(){
+		UserField[] fields = new UserField[2];
+		fields[0] = new UserField("A1","B1");
+		fields[1] = new UserField("A2","B2");
+		JSONLog4j2Layout layout = new JSONLog4j2Layout(false,false,false,true,fields,Charset.forName("UTF-8"));
+		DummyFilledLogEvent event = new DummyFilledLogEvent(LONG_STRING);
+		event.getContextMap().put("CT1", "VALUE");
+		event.getContextMap().put("CT2", "VALUE");
+		System.out.println(layout.toSerializable(event));
+	}		
 }

@@ -112,5 +112,4 @@ public class UserField {
 		builder.append("]");
 		return builder.toString();
 	}
-	
 }
