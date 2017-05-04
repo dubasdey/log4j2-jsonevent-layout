@@ -172,7 +172,12 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     		int length = value.length();
     		for (int i = 0; i < length; i++) {
     			char c = value.charAt(i);
-    			String replacement = htmlSafe? HTML_SAFE_REPLACEMENT_CHARS[c]: REPLACEMENT_CHARS[c];
+    			String replacement = null;
+    			
+    			if(c<128){
+    				replacement = htmlSafe? HTML_SAFE_REPLACEMENT_CHARS[c]: REPLACEMENT_CHARS[c];
+    			}
+
     			if (replacement != null) {
     				builder.append(replacement);
     			}else{

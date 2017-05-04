@@ -120,6 +120,7 @@ public class UserField {
 	/**
 	 * Creates the User field.
 	 *
+	 * @param config the config
 	 * @param key the key
 	 * @param value the value
 	 * @return the user field
