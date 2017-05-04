@@ -1,7 +1,9 @@
 package org.erc.log4j2.layout;
 
+import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
+import org.apache.logging.log4j.core.config.plugins.PluginConfiguration;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 
 /**
@@ -124,9 +126,9 @@ public class UserField {
 	 */
 	@PluginFactory
 	public static UserField createUserField(
-			@PluginAttribute("key") String key,
-			@PluginAttribute("value") String value
-			){
+			@PluginConfiguration final Configuration config,
+			@PluginAttribute("key") final String key,
+			@PluginAttribute("value") final String value ){
 		return new UserField(key,value);
 	}
 } 

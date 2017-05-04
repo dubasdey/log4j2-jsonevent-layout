@@ -11,8 +11,10 @@ import java.util.TimeZone;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext.ContextStack;
 import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
+import org.apache.logging.log4j.core.config.plugins.PluginConfiguration;
 import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.AbstractStringLayout;
@@ -132,12 +134,13 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     @PluginFactory
     public static JSONLog4j2Layout createLayout(
     	// @formatter:off
+    		@PluginConfiguration final Configuration config,
     		@PluginAttribute("locationInfo") boolean locationInfo,
     		@PluginAttribute("singleLine") boolean singleLine,
     		@PluginAttribute("htmlSafe") boolean htmlSafe,
     		@PluginAttribute("plainContextMap") boolean plainContextMap, 
     		@PluginAttribute("charset") Charset charset,
-    		@PluginElement("UserField") UserField[] userFields
+    		@PluginElement("UserFields") final UserField[] userFields
     	// @formatter:on
     	) {
     	
