@@ -22,6 +22,8 @@ Add the `<JSONLog4j2Layout>` tag to any appender.
 
 ## Result Example
 
+Example expanded to multiple lines
+
 ```json
 {
 "@timestamp":"2017-05-03T15:46:34.393Z",
@@ -45,5 +47,32 @@ Add the `<JSONLog4j2Layout>` tag to any appender.
 "@version":"1"
 }
 ```
+
+## How-To
+
+### Send to logstash 
+
+1.- To send to logstash, add the jar to your application classpath and configure a log4j2 socket appender with the host and port used by logstash. Then add to the desired loggers.
+
+```xml
+<Socket name="socketAppender" host="myhost" port="9201">
+      <JSONLog4j2Layout singleLine="true" />
+</Socket>
+```
+
+
+
+2.- Configure logstash using tcp input in server mode with the same port.
+
+```
+input {
+    tcp {
+        port => 9201
+        mode => "server"
+        codec => json_lines
+    }
+}
+```
+
 
 
