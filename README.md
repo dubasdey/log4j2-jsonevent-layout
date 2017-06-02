@@ -2,7 +2,7 @@
 
 [![GitHub license](https://img.shields.io/badge/license-LGPL-blue.svg)](https://raw.githubusercontent.com/dubasdey/log4j2-jsonevent-layout/master/LICENSE)
 [![Build Status](https://travis-ci.org/dubasdey/log4j2-jsonevent-layout.svg?branch=master)](https://travis-ci.org/dubasdey/log4j2-jsonevent-layout)
-
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/61c54dd2252246cfac7c81d99570dee2)](https://www.codacy.com/app/dubasdey/log4j2-jsonevent-layout?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dubasdey/log4j2-jsonevent-layout&amp;utm_campaign=Badge_Grade)
 
 Log4j2 JSON Event Layout without requirement of thirdparty libraries
 
