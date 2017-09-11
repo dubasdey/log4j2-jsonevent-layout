@@ -74,6 +74,16 @@ input {
 }
 ```
 
+## Maven dependency
+-----------------------------------------------------------------------------------------
+
+```
+<dependency>
+  <groupId>com.github.dubasdey</groupId>
+  <artifactId>log4j2-jsonevent-layout</artifactId>
+  <version>0.0.4</version>
+</dependency>
+```
 
 ## Donate
 -----------------------------------------------------------------------------------------
