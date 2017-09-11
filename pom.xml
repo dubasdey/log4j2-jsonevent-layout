@@ -6,7 +6,9 @@
 	<groupId>org.erc</groupId>
 	<artifactId>log4j2-jsonevent-layout</artifactId>
 	<version>0.0.3</version>
-	
+	<name>log4j2-jsonevent-layout</name>
+	<description>Log4j2 JSON Event layout without third party dependencies</description>
+	<url>https://github.com/dubasdey/log4j2-jsonevent-layout</url>
 	
 	<licenses>
 	    <license>
