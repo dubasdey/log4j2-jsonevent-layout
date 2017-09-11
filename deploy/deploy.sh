@@ -8,7 +8,7 @@ if ([ "$TRAVIS_BRANCH" == "master" ] && [ ! -z "$TRAVIS_TAG" ]) &&  [ "$TRAVIS_P
 	gpg --fast-import deploy/signingkey.asc
 	echo "Maven deploy"
 	mvn deploy -P sign,build-extras --settings deploy/settings.xml
- else
-	echo "Not for deploy"
+else
+	echo "Not for deploy. $TRAVIS_BRANCH $TRAVIS_TAG $TRAVIS_PULL_REQUEST"
 fi
 
