@@ -1,8 +1,10 @@
 # log4j2-jsonevent-layout
 
 [![GitHub license](https://img.shields.io/badge/license-LGPL-blue.svg)](https://raw.githubusercontent.com/dubasdey/log4j2-jsonevent-layout/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/dubasdey/log4j2-jsonevent-layout.svg)](https://github.com/dubasdey/log4j2-jsonevent-layout/issues)
 [![Build Status](https://travis-ci.org/dubasdey/log4j2-jsonevent-layout.svg?branch=master)](https://travis-ci.org/dubasdey/log4j2-jsonevent-layout)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/61c54dd2252246cfac7c81d99570dee2)](https://www.codacy.com/app/dubasdey/log4j2-jsonevent-layout?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dubasdey/log4j2-jsonevent-layout&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/61c54dd2252246cfac7c81d99570dee2)](https://www.codacy.com/app/dubasdey/log4j2-jsonevent-layout?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dubasdey/log4j2-jsonevent-layout&amp;utm_campaign=Badge_Grade) 
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.dubasdey/log4j2-jsonevent-layout.svg)]()
 
 Log4j2 JSON Event Layout without requirement of thirdparty libraries
 
