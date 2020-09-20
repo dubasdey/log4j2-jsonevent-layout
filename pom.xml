@@ -38,18 +38,21 @@
 	</developers>
 	
 	<dependencies>
-		<dependency>
+		
+	    <dependency>
     		<groupId>org.apache.logging.log4j</groupId>
     		<artifactId>log4j-core</artifactId>
-    		<version>[2.13.2,)</version>
+    		<version>[2.13.3,)</version>
     		<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>		
+	    </dependency>
+
+	    <dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.11</version>
+		<scope>test</scope>
+	    </dependency>
+		
 	</dependencies>
 	
 	
