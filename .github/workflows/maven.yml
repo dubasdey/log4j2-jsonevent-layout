@@ -27,8 +27,3 @@ jobs:
     - name: Test with Maven
       run: mvn -B test --file pom.xml
 
-    - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v2
-        if: always()
-        with:
-          report_paths: '**/junit-reports/TEST-*.xml'
