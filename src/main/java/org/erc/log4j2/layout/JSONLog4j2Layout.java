@@ -5,7 +5,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TimeZone;
 
 import org.apache.logging.log4j.Logger;
@@ -53,9 +52,6 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
 	/** The Constant DOTS. */
 	private static final String DOTS  = ":";
 	
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -9204326215721954008L;
-
 	/** The Constant REPLACEMENT_CHARS. */
 	private static final String[] REPLACEMENT_CHARS;
 	
@@ -123,12 +119,13 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     /**
      * Creates the layout.
      *
-     * @param locationInfo the location info
-     * @param singleLine the single line
-     * @param htmlSafe the html safe
-     * @param plainContextMap the plain context map
-     * @param charset the charset
-     * @param userFields the user fields
+     * @param config			Log4j Configuration
+     * @param locationInfo 		the location info
+     * @param singleLine 		the single line
+     * @param htmlSafe 			the html safe
+     * @param plainContextMap 	the plain context map
+     * @param charset 			the charset
+     * @param userFields 		the user fields
      * @return the JSON log 4 j 2 layout
      */
     @PluginFactory
@@ -374,13 +371,12 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
 	        	addField(builder,"contextStack",event.getContextStack());
 	        }
 	        
-	        if(event.getContextMap()!=null) {
+	        
+	        if(event.getContextData()!=null) {
 	        	if(plainContextMap){
-	        		for(Entry<String,String> entry: event.getContextMap().entrySet()){
-	        			addField(builder,entry.getKey(),entry.getValue());
-	        		}
+	        		event.getContextData().forEach((k,v) -> addField(builder,k,v));
 	        	}else{
-	        		addField(builder,"contextMap",event.getContextMap());
+	        		addField(builder,"contextMap",event.getContextData());
 	        	}
 	        }
 	        
