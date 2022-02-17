@@ -23,9 +23,20 @@ jobs:
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml --settings settings.xml
+    - name: Create Key File
+      run: echo "$GPG_PRIVATE_KEY" > private.key
+      env:
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        
+    - name: Import GPG Key
+      run: gpg --import --batch private.key
+        
+    - name: Build
+      run: mvn -B package --file pom.xml
 
+    - name: Sign
+      run: mvn -B gpg:sign --file pom.xml --settings settings.xml
+      
     - name: Publish to OSS
       run: mvn -B deploy --file pom.xml --settings settings.xml
       env:
