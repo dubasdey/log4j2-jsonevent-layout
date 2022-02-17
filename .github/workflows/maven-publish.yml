@@ -24,7 +24,7 @@ jobs:
         server-password: MAVEN_PASSWORD
 
     - name: Create Key File
-      run: echo "$GPG_PRIVATE_KEY" > private.key
+      run: echo "$GPG_PRIVATE_KEY" | base64 --decode > private.key
       env:
         GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         
