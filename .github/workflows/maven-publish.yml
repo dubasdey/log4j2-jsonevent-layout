@@ -26,11 +26,8 @@ jobs:
         gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-    - name: Build
-      run: mvn -B package --file pom.xml
-
     - name: Publish to OSS
-      run: mvn -B gpg:sign,deploy --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
+      run: mvn -B deploy --file pom.xml
       env:
          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
