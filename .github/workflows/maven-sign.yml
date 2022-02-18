@@ -29,7 +29,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Sign
-      run: mvn -B gpg:sign --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
+      run: mvn -B gpg:sign --file pom.xml
       env:
          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
