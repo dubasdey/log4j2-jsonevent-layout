@@ -27,7 +27,8 @@ jobs:
 
     - name: Install gpg secret key
       run: |
-         cat <(echo -e "${{ secrets.GPG_PRIVATE_KEY }}") | gpg --batch --import
+         echo ${{ secrets.GPG_PRIVATE_KEY }} > private.key
+         gpg --batch --import private.key
          gpg --list-secret-keys --keyid-format LONG
     
     - name: Sign
