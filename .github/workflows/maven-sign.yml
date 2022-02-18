@@ -25,6 +25,11 @@ jobs:
         gpg-private-key: ${{secrets.GPG_PRIVATE_KEY}}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
+    - name: Install gpg secret key
+      run: |
+         cat <(echo -e "${{ secrets.GPG_PRIVATE_KEY }}") | gpg --batch --import
+         gpg --list-secret-keys --keyid-format LONG
+    
     - name: Sign
       run: mvn -B verify --file pom.xml
       env:
