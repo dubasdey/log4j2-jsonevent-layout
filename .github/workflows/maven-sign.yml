@@ -25,18 +25,16 @@ jobs:
         gpg-private-key: ${{secrets.GPG_PRIVATE_KEY}}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-    - name: Decode secret to file
-      uses: davidSchuppa/base64Secret-toFile-action@v1
-      with:
-        secret: ${{ secrets.GPG_PRIVATE_KEY }}
-        filename: private.key
-        destination-path: ~/
+
         
     - name: Install gpg secret key
       run: |
+         echo -n "$MAVEN_GPG_KEY" | base64 --decode > private.key
          gpg --batch --import private.key
          gpg --list-secret-keys --keyid-format LONG
-    
+      env:
+       MAVEN_GPG_KEY: ${{secrets.GPG_PRIVATE_KEY}}
+
     - name: Sign
       run: mvn -B verify --file pom.xml
       env:
