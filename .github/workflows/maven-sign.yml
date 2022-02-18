@@ -25,11 +25,8 @@ jobs:
         gpg-private-key: ${{secrets.GPG_PRIVATE_KEY}}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-    - name: Build
-      run: mvn -B package --file pom.xml
-
     - name: Sign
-      run: mvn -B gpg:sign --file pom.xml
+      run: mvn -B package,gpg:sign --file pom.xml
       env:
          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
