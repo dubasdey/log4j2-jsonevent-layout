@@ -19,9 +19,10 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: 'maven'
+        check-latest: false
         server-id: ossrh 
         server-username: MAVEN_USERNAME
-        server-password: MAVEN_PASSWORD
+        server-password: MAVEN_USERTOKEN
         gpg-private-key: ${{secrets.GPG_PRIVATE_KEY}}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
@@ -39,7 +40,7 @@ jobs:
       run: mvn -B verify --file pom.xml
       env:
          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-         MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+         MAVEN_USERTOKEN: ${{ secrets.OSSRH_TOKEN }}
          MAVEN_GPG_KEYNAME: ${{secrets.GPG_KEY_NAME}}
          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
