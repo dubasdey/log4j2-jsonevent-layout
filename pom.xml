@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dubasdey</groupId>
 	<artifactId>log4j2-jsonevent-layout</artifactId>
-	<version>0.0.6</version>
+	<version>0.0.7</version>
 	<name>log4j2-jsonevent-layout</name>
 	<description>Log4j2 JSON Event layout without third party dependencies</description>
 	<url>https://github.com/dubasdey/log4j2-jsonevent-layout</url>
