@@ -7,41 +7,30 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: main
     permissions:
       contents: read
       packages: write
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
+  
+    - name: Set up JDK
       uses: actions/setup-java@v2
       with:
         java-version: '11'
         distribution: 'temurin'
-        cache: 'maven'
+        #cache: 'maven'
         check-latest: false
         server-id: ossrh 
         server-username: MAVEN_USERNAME
         server-password: MAVEN_USERTOKEN
-        gpg-private-key: ${{secrets.GPG_PRIVATE_KEY}}
-        gpg-passphrase: MAVEN_GPG_PASSPHRASE
-
-
-        
-    - name: Install gpg secret key
-      run: |
-         echo -n "$MAVEN_GPG_KEY" | base64 --decode > private.key
-         gpg --batch --import private.key
-         gpg --list-secret-keys --keyid-format LONG
-      env:
-       MAVEN_GPG_KEY: ${{secrets.GPG_PRIVATE_KEY}}
+        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+        gpg-passphrase: GPG_PASSPHRASE
 
     - name: Sign
-      run: mvn -B verify --file pom.xml
+      run: mvn -B verify -Dmaven.test.skip=true -Dmaven.javadoc.skip=true
       env:
-         MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-         MAVEN_USERTOKEN: ${{ secrets.OSSRH_TOKEN }}
-         MAVEN_GPG_KEYNAME: ${{secrets.GPG_KEY_NAME}}
-         MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
-
+         MAVEN_USERNAME: ${{ secrets.OSSRH_JIRA_USERNAME }}
+         MAVEN_USERTOKEN: ${{ secrets.OSSRH_JIRA_PASSWORD }}
+         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
