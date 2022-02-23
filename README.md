@@ -1,9 +1,12 @@
 # log4j2-jsonevent-layout
 
 [![GitHub license](https://img.shields.io/badge/license-LGPL-blue.svg)](https://raw.githubusercontent.com/dubasdey/log4j2-jsonevent-layout/master/LICENSE)
+
 [![GitHub issues](https://img.shields.io/github/issues/dubasdey/log4j2-jsonevent-layout.svg)](https://github.com/dubasdey/log4j2-jsonevent-layout/issues)
+
 [![CI Build Status](https://github.com/dubasdey/log4j2-jsonevent-layout/actions/workflows/maven.yml/badge.svg)](https://github.com/dubasdey/log4j2-jsonevent-layout/actions/workflows/maven.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.dubasdey/log4j2-jsonevent-layout.svg)]()
+
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.dubasdey/log4j2-jsonevent-layout.svg)](https://search.maven.org/artifact/com.github.dubasdey/log4j2-jsonevent-layout)
 
 Log4j2 JSON Event Layout without requirement of thirdparty libraries
 
