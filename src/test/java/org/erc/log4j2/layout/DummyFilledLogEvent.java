@@ -1,12 +1,13 @@
 package org.erc.log4j2.layout;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.AbstractLogEvent;
 import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.message.SimpleMessage;
+import org.apache.logging.log4j.spi.DefaultThreadContextMap;
+import org.apache.logging.log4j.util.ReadOnlyStringMap;
 
 /**
  * The Class DummyFilledLogEvent.
@@ -19,8 +20,12 @@ public class DummyFilledLogEvent extends AbstractLogEvent{
 	/** The message. */
 	private String message = null;
 	
-	/** The context map. */
-	private Map<String, String> contextMap = new HashMap<String,String>();
+	/** Thread Context as Dummy contextData */
+	private DefaultThreadContextMap contextMap = new DefaultThreadContextMap();
+	
+	/** exception */
+	private Throwable thrown;
+	
 	
 	/** The source. */
 	private StackTraceElement source;
@@ -85,6 +90,15 @@ public class DummyFilledLogEvent extends AbstractLogEvent{
 		return "DummyThread";
 	}
 	
+	@Override
+	public Throwable getThrown() {
+		return thrown;
+	}
+	
+	/** Set dummy throwable*/
+	public void setThrownDummy(Throwable thrown) {
+		this.thrown = thrown;
+	}
 	/**
 	 * Gets the time millis.
 	 *
@@ -95,23 +109,24 @@ public class DummyFilledLogEvent extends AbstractLogEvent{
 		return System.currentTimeMillis();
 	}
 	
+	@Override
+	public ReadOnlyStringMap getContextData() {
+		return contextMap;
+	}
+	
+	public DefaultThreadContextMap getContextDataDummy() {
+		return contextMap;
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.apache.logging.log4j.core.AbstractLogEvent#getContextMap()
 	 */
 	@Override
 	public Map<String, String> getContextMap() {
-		return contextMap;
+		// Deprecated skip usage
+		return null;
 	}
 
-	/**
-	 * Sets the context map.
-	 *
-	 * @param contextMap the context map
-	 */
-	public void setContextMap(Map<String, String> contextMap) {
-		this.contextMap = contextMap;
-	}
-	
 	/* (non-Javadoc)
 	 * @see org.apache.logging.log4j.core.AbstractLogEvent#getSource()
 	 */
