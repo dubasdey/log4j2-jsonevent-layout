@@ -4,6 +4,8 @@
 [![GitHub issues](https://img.shields.io/github/issues/dubasdey/log4j2-jsonevent-layout.svg)](https://github.com/dubasdey/log4j2-jsonevent-layout/issues)
 [![CI Build Status](https://github.com/dubasdey/log4j2-jsonevent-layout/actions/workflows/maven.yml/badge.svg)](https://github.com/dubasdey/log4j2-jsonevent-layout/actions/workflows/maven.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.dubasdey/log4j2-jsonevent-layout.svg)](https://search.maven.org/artifact/com.github.dubasdey/log4j2-jsonevent-layout)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d964db30361149b797ec3f9b80e5f731)](https://www.codacy.com/gh/dubasdey/log4j2-jsonevent-layout/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dubasdey/log4j2-jsonevent-layout&amp;utm_campaign=Badge_Grade)
+
 
 Log4j2 JSON Event Layout without requirement of thirdparty libraries
 
