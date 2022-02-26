@@ -25,3 +25,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package
 
+    - name: Codacy report
+      run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r target/site/jacoco/jacoco.xml
+      env:
+         CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
