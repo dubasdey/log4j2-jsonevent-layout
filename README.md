@@ -13,7 +13,18 @@ Log4j2 JSON Event Layout without requirement of thirdparty libraries
 
 ## Usage
 
-Add the `<JSONLog4j2Layout>` tag to any appender.
+Add the `<JSONLog4j2Layout>` tag to any appender to use it.
+
+
+
+**Note:** It could be required to add to the configuration node in the packages attribute the package of the plugin.
+
+Example:
+
+    <Configuration packages="org.erc.log4j2.layout">
+
+Check the Log4j2 configuration java doc for more references 
+https://logging.apache.org/log4j/2.x/manual/configuration.html
 
 ### Optional Attributes
 
