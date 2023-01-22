@@ -4,10 +4,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dubasdey</groupId>
-	<artifactId>log4j2-jsonevent-layout-example-basic</artifactId>
+	<artifactId>log4j2-jsonevent-layout-example-userfields</artifactId>
 	<version>0.0.1</version>
 	<name>log4j2-jsonevent-layout</name>
-	<description>Log4j2 JSON Event layout basic example</description>
+	<description>Log4j2 JSON Event layout user fields example</description>
 	<url>https://github.com/dubasdey/log4j2-jsonevent-layout</url>
 	
 	<licenses>

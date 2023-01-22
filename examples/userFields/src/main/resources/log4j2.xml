@@ -1,0 +1,47 @@
+<Configuration packages="org.erc.log4j2.layout" status="WARN">
+  <Appenders>
+	  
+    <Console name="ConsoleJSON">
+      <JSONLog4j2Layout singleLine="true">
+		  <UserField key="MyCustomField" value="My Custom value"/>
+      </JSONLog4j2Layout>
+    </Console>
+    
+    <Console name="ConsoleJSONSimple">
+      <JSONLog4j2Layout singleLine="false" plainContextMap="true"/>
+    </Console>
+    
+    <Console name="ConsoleJSONComplex">
+      <JSONLog4j2Layout singleLine="false" plainContextMap="false"/>
+    </Console>
+    
+    <Console name="Console">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>  
+  </Appenders>
+  <Loggers>
+	  
+	<Logger name="org.erc.log4j2.layout.examples.userfields.ClassToLog1" level="debug" additivity="false">
+      <AppenderRef ref="ConsoleJSON"/>
+    </Logger>
+	<Logger name="org.erc.log4j2.layout.examples.userfields.ClassToLog2" level="debug" additivity="false">
+      <AppenderRef ref="ConsoleJSONSimple"/>
+    </Logger>
+	<Logger name="org.erc.log4j2.layout.examples.userfields.ClassToLog3" level="debug" additivity="false">
+      <AppenderRef ref="ConsoleJSON"/>
+    </Logger>     
+	<Logger name="org.erc.log4j2.layout.examples.userfields.ClassToLog4" level="debug" additivity="false">
+      <AppenderRef ref="Console"/>
+    </Logger>    
+    <Logger name="org.erc.log4j2.layout.examples.userfields.ClassToLog5" level="debug" additivity="false">
+      <AppenderRef ref="ConsoleJSONComplex"/>
+    </Logger>    
+    <Logger name="org.erc.log4j2.layout.examples.userfields.ClassToLog6" level="debug" additivity="false">
+      <AppenderRef ref="ConsoleJSONComplex"/>
+    </Logger>     
+    
+    <Root level="DEBUG">
+      <AppenderRef ref="Console"/>
+    </Root>
+  </Loggers>
+</Configuration>
