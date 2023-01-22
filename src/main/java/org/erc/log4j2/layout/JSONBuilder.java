@@ -121,14 +121,15 @@ public class JSONBuilder {
             return "";
         } else {
             StringBuilder builder = new StringBuilder();
+            String finalValue = value;
             if (singleLine) {
-                value = value.replaceAll("\r", "");
-                value = value.replaceAll("\n", "");
+                finalValue = value.replaceAll("\r", "");
+                finalValue = finalValue.replaceAll("\n", "");
             }
 
-            int length = value.length();
+            int length = finalValue.length();
             for (int i = 0; i < length; i++) {
-                char c = value.charAt(i);
+                char c = finalValue.charAt(i);
                 String replacement = null;
 
                 if (c < 128) {

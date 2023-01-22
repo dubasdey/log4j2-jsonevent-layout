@@ -72,6 +72,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
         this.singleLine = singleLine;
         this.plainContextMap = plainContextMap;
         this.userFields = userFields;
+        this.htmlSafe = htmlSafe;
         ISO_DATETIME_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
@@ -101,14 +102,17 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
             @PluginElement("UserFields") final UserField[] userFields
 // @formatter:on
     ) {
-
+        Charset finalCharset = null;
         if (charset == null) {
-            charset = Charset.forName("UTF-8");
+            finalCharset = Charset.forName("UTF-8");
+        }else {
+            finalCharset = charset;
         }
-        LOGGER.debug("Creating JSONLog4j2Layout {}", charset);
+        
+        LOGGER.debug("Creating JSONLog4j2Layout {}", finalCharset);
         return new JSONLog4j2Layout(
                 locationInfo, singleLine, htmlSafe, newLineFormat, 
-                plainContextMap, userFields, charset
+                plainContextMap, userFields, finalCharset
         );
     }
 
@@ -163,7 +167,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
         if (event != null) {
             toSerializableEvent(builder, event);    
         }
-        toSerializableEventUserFields(builder,event);
+        toSerializableEventUserFields(builder);
         builder.addField("@timestamp", ISO_DATETIME_FORMAT.format(event.getTimeMillis()));
         
         return builder.end();
@@ -221,7 +225,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
      * @param builder   builder
      * @param event     event
      */
-    private void toSerializableEventUserFields(JSONBuilder builder, LogEvent event) {
+    private void toSerializableEventUserFields(JSONBuilder builder) {
         if (userFields != null) {
             for (UserField userField : userFields) {
                 builder.addField( userField.getKey(), userField.getValue());

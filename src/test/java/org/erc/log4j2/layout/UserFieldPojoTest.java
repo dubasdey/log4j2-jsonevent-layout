@@ -2,6 +2,7 @@ package org.erc.log4j2.layout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -59,7 +60,8 @@ class UserFieldPojoTest {
         UserField field = UserField.createUserField(null, "K", "V");
         UserField field2 = UserField.createUserField(null, null, null);
 
-        assertFalse(field.equals(null), "Not equals");
+
+        assertNotEquals(field, null, "Not equals");
         assertFalse(field.equals(new Object()), "Not equals");
         assertFalse(field.equals(new UserField("K", "V1")), "Not equals");
         assertFalse(field.equals(new UserField("K1", "V1")), "Not equals");
