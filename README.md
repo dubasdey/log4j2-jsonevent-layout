@@ -26,11 +26,13 @@ Example:
 Check the Log4j2 configuration java doc for more references 
 https://logging.apache.org/log4j/2.x/manual/configuration.html
 
+
 ### Optional Attributes
 
 * locationInfo - Adds location info to the Trace
 * singleLine - Removes \r and \n in JSON String
 * htmlSafe - Escapes additional characters to print the JSON on HTML pages.
+* newLineFormat - Custom new line for each line (if singleLine is off) or the final line (if singleLine is on)
 * plainContextMap - Prints the content of the ContextMap in the root as __key:value__ instead of a contextMap object with the values
 * charset - Charset to use (Default UTF-8)
 * UserField - Collection of user fields with __key__ and __value__ that will be printed in the LogEntry
@@ -64,9 +66,42 @@ Example expanded to multiple lines
 }
 ```
 
-## How-To
 
-### Send to logstash 
+
+
+## Maven dependency
+
+To include this library in your project just add the dependency to your maven project
+
+Example:
+```
+<dependency>
+  <groupId>com.github.dubasdey</groupId>
+  <artifactId>log4j2-jsonevent-layout</artifactId>
+  <version>0.0.7</version>
+</dependency>
+```
+
+
+
+
+## Donate
+Buy me a coffe to help me continue supporting this project. 
+<a href="https://www.paypal.com/donate/?hosted_button_id=K6DQ5GLE8KHGY">Buy me a coffe</a>
+
+
+
+# Security
+
+You could check any important security information at the [security document](SECURITY.md)
+
+
+
+# How-Tos
+
+
+### Use the appender formatter to send data to logstash 
+
 
 1.- To send to logstash, add the jar to your application classpath and configure a log4j2 socket appender with the host and port used by logstash. Then add to the desired loggers.
 
@@ -75,8 +110,6 @@ Example expanded to multiple lines
       <JSONLog4j2Layout singleLine="true" />
 </Socket>
 ```
-
-
 
 2.- Configure logstash using tcp input in server mode with the same port.
 
@@ -89,19 +122,3 @@ input {
     }
 }
 ```
-
-## Maven dependency
------------------------------------------------------------------------------------------
-
-```
-<dependency>
-  <groupId>com.github.dubasdey</groupId>
-  <artifactId>log4j2-jsonevent-layout</artifactId>
-  <version>0.0.6</version>
-</dependency>
-```
-
-## Donate
------------------------------------------------------------------------------------------
-Buy me a coffe to help me continue supporting this project. 
-<a href="https://www.paypal.com/donate/?hosted_button_id=K6DQ5GLE8KHGY">Buy me a coffe</a>
