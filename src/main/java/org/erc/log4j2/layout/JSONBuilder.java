@@ -6,10 +6,11 @@ import java.util.Map;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext.ContextStack;
 import org.apache.logging.log4j.status.StatusLogger;
+
 /**
- * Simple JSON Builder
- * @author erc
+ * Simple JSON Builder.
  *
+ * @author erc
  */
 public class JSONBuilder {
     
@@ -154,6 +155,7 @@ public class JSONBuilder {
      * Gets the stack trace.
      *
      * @param traces the traces
+     * @param deep the deep
      * @return the stack trace
      */
     private void buildStackTrace(StackTraceElement[] traces,int deep) {
@@ -195,7 +197,6 @@ public class JSONBuilder {
     /**
      * Adds the field.
      *
-     * @param builder the builder
      * @param key     the key
      * @param value   the value
      */
@@ -207,6 +208,7 @@ public class JSONBuilder {
      * Gets the map.
      *
      * @param map the map
+     * @param deep the deep
      * @return the map
      */
     private void buildMap(Map<?, ?> map,int deep) {
@@ -268,10 +270,10 @@ public class JSONBuilder {
     /**
      * Adds the field.
      *
-     * @param builder the builder
      * @param key     the key
      * @param value   the value
      * @param comma   the comma
+     * @param deep the deep
      */
     private void addField(String key, Object value, boolean comma,int deep) {
         LOGGER.debug("addField {}={} ({},{})", key, value, comma,deep);
@@ -331,8 +333,8 @@ public class JSONBuilder {
     /**
      * Adds the field exception.
      *
-     * @param builder the builder
      * @param t the t
+     * @param deep the deep
      */
     private void addFieldException(Throwable t,int deep) {
         builder.append(OBJ_S);

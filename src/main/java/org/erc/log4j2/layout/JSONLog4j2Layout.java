@@ -40,6 +40,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     /** The plain context map. */
     private boolean plainContextMap = false;
 
+    /** The new line format. */
     private String newLineFormat;
     
     /** The user fields. */
@@ -51,6 +52,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
      * @param locationInfo    the location info
      * @param singleLine      the single line
      * @param htmlSafe        the html safe
+     * @param newLineFormat the new line format
      * @param plainContextMap the plain context map
      * @param userFields      the user fields
      * @param charset         the charset
@@ -80,6 +82,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
      * @param locationInfo    the location info
      * @param singleLine      the single line
      * @param htmlSafe        the html safe
+     * @param newLineFormat the new line format
      * @param plainContextMap the plain context map
      * @param charset         the charset
      * @param userFields      the user fields
@@ -141,6 +144,12 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
         return hostName;
     }
 
+    /**
+     * To serializable.
+     *
+     * @param event the event
+     * @return the string
+     */
     /*
      * (non-Javadoc)
      * 
@@ -161,8 +170,8 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     }
 
     /**
-     * Internal operation toSerializable of the event part
-     * 
+     * Internal operation toSerializable of the event part.
+     *
      * @param builder builder
      * @param event   event
      */
@@ -207,7 +216,8 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
     }
     
     /**
-     * to Seriazliable event, user custom data
+     * to Seriazliable event, user custom data.
+     *
      * @param builder   builder
      * @param event     event
      */
