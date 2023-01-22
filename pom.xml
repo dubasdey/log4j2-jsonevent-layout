@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dubasdey</groupId>
 	<artifactId>log4j2-jsonevent-layout</artifactId>
-	<version>0.0.7</version>
+	<version>0.0.8</version>
 	<name>log4j2-jsonevent-layout</name>
 	<description>Log4j2 JSON Event layout without third party dependencies</description>
 	<url>https://github.com/dubasdey/log4j2-jsonevent-layout</url>
@@ -59,9 +59,9 @@
 	    </dependency>
 
 	    <dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.1</version>
+			<groupId>org.junit.jupiter</groupId>
+        	<artifactId>junit-jupiter-engine</artifactId>
+        	<version>5.9.1</version>
 			<scope>test</scope>
 	    </dependency>
 		
