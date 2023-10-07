@@ -199,7 +199,7 @@ public class JSONLog4j2Layout extends AbstractStringLayout {
             builder.addField( "exception", event.getThrown());
         }
 
-        if (locationInfo) {
+        if (locationInfo && event.getSource()!=null) {
             builder.addField( "file", event.getSource().getFileName());
             builder.addField( "line_number", event.getSource().getLineNumber());
             builder.addField( "class", event.getSource().getClassName());

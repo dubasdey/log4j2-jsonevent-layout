@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.Charset;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.core.LogEvent;
@@ -13,11 +15,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * The Class JSONLog4j2LayoutTest.
+ * The Class JSONLog4j2LayoutTest.contextStack
  */
 @DisplayName("Layout Plugin test")
 class JSONLog4j2LayoutTest {
 
+    private final Logger log = Logger.getLogger("test");
+            
     /** The Constant SHORT_STRING. */
     private static final String SHORT_STRING = "Dummy Message Test with tab T\tT before here.";
 
@@ -33,6 +37,7 @@ class JSONLog4j2LayoutTest {
                 Charset.forName("UTF-8"));
         LogEvent event = new DummyEmptyLogEvent();
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
 
@@ -45,6 +50,7 @@ class JSONLog4j2LayoutTest {
                 Charset.forName("UTF-8"));
         LogEvent event = new DummyFilledLogEvent(SHORT_STRING);
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
 
@@ -58,6 +64,7 @@ class JSONLog4j2LayoutTest {
         LogEvent event = new DummyFilledLogEvent(SHORT_STRING);
         ((DummyFilledLogEvent) event).setContextData(null);
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
     
@@ -72,6 +79,7 @@ class JSONLog4j2LayoutTest {
         LogEvent event = new DummyFilledLogEvent(SHORT_STRING);
         ((DummyFilledLogEvent) event).getContextDataDummy().clear();
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
     
@@ -85,6 +93,7 @@ class JSONLog4j2LayoutTest {
         LogEvent event = new DummyFilledLogEvent(SHORT_STRING);
         ((DummyFilledLogEvent) event).getContextDataDummy().put("A", "B");
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
     
@@ -92,13 +101,27 @@ class JSONLog4j2LayoutTest {
      * Test filled event.
      */
     @Test
-    void testFilledEventContextStack() {
+    void testFilledEventContextStack1() {
         JSONLog4j2Layout layout = new JSONLog4j2Layout(false, false, false, "\n", false, null,
                 Charset.forName("UTF-8"));
         LogEvent event = new DummyFilledLogEvent(SHORT_STRING);
         ((DummyFilledLogEvent) event).setContextStack(new DefaultThreadContextStack(true));
-        ((DummyFilledLogEvent) event).getContextStack().add("UPS");
+        ((DummyFilledLogEvent) event).getContextStack().add("UPS0");
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
+        assertNotNull(serializedData,"Serialized data");
+    }
+    
+    @Test
+    void testFilledEventContextStack2() {
+        JSONLog4j2Layout layout = new JSONLog4j2Layout(true, true, true, "\n", true, null,
+                Charset.forName("UTF-8"));
+        LogEvent event = new DummyFilledLogEvent(SHORT_STRING);
+        ((DummyFilledLogEvent) event).setContextStack(new DefaultThreadContextStack(true));
+        ((DummyFilledLogEvent) event).getContextStack().add("UPS1");
+        ((DummyFilledLogEvent) event).getContextStack().add("UPS2");
+        String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
     
@@ -112,6 +135,7 @@ class JSONLog4j2LayoutTest {
         LogEvent event = new DummyFilledLogEvent(SHORT_STRING);
         ((DummyFilledLogEvent) event).setContextStack(ThreadContext.EMPTY_STACK);
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
     
@@ -125,6 +149,7 @@ class JSONLog4j2LayoutTest {
         LogEvent event = new DummyFilledLogEvent(SHORT_STRING);
         ((DummyFilledLogEvent) event).setContextStack(null);
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
     
@@ -137,6 +162,7 @@ class JSONLog4j2LayoutTest {
         DummyFilledLogEvent event = new DummyFilledLogEvent(SHORT_STRING);
         event.setSource(new StackTraceElement("ClassName.class", "MethodElement", "File.java", 42));
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
 
@@ -149,6 +175,7 @@ class JSONLog4j2LayoutTest {
                 Charset.forName("UTF-8"));
         LogEvent event = new DummyFilledLogEvent(LONG_STRING);
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
 
@@ -163,6 +190,7 @@ class JSONLog4j2LayoutTest {
         JSONLog4j2Layout layout = new JSONLog4j2Layout(false, false, false, "\n", false, fields,Charset.forName("UTF-8"));
         LogEvent event = new DummyFilledLogEvent(LONG_STRING);
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
 
@@ -189,6 +217,7 @@ class JSONLog4j2LayoutTest {
         DummyFilledLogEvent event = new DummyFilledLogEvent(LONG_STRING);
         event.setThrownDummy(new Throwable("TESTEX"));
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
     
@@ -202,6 +231,7 @@ class JSONLog4j2LayoutTest {
         DummyFilledLogEvent event = new DummyFilledLogEvent(LONG_STRING);
         event.setThrownDummy(new Throwable("TESTEX"));
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
     
@@ -213,6 +243,7 @@ class JSONLog4j2LayoutTest {
         JSONLog4j2Layout layout = new JSONLog4j2Layout(false, true, false, "\n", false, null, Charset.forName("UTF-8"));
         LogEvent event = new DummyFilledLogEvent(LONG_STRING);
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
 
@@ -220,7 +251,7 @@ class JSONLog4j2LayoutTest {
      * Test filled multi line event.
      */
     @Test
-    void testFilledMultiLineWithUserFieldsAndContextMapEvent() {
+    void testFilledMultiLineWithUserFieldsAndContextMapEvent1() {
         UserField[] fields = new UserField[2];
         fields[0] = new UserField("A1", "B1");
         fields[1] = new UserField("A2", "B2");
@@ -230,6 +261,7 @@ class JSONLog4j2LayoutTest {
         event.getContextDataDummy().put("CT1", "VALUE");
         event.getContextDataDummy().put("CT2", "VALUE");
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
 
@@ -247,6 +279,7 @@ class JSONLog4j2LayoutTest {
         event.getContextDataDummy().put("CT1", "VALUE");
         event.getContextDataDummy().put("CT2", "VALUE");
         String serializedData = layout.toSerializable(event);
+        log.log(Level.INFO,serializedData);
         assertNotNull(serializedData,"Serialized data");
     }
 }
