@@ -101,7 +101,7 @@
 			  <artifactId>maven-surefire-plugin</artifactId>
 			  <version>2.22.2</version>
 			  <configuration>
-			    <argLine>${argLine} -Xmx1238m</argLine>
+			    <argLine>${argLine} -Xms96m -Xmx512m -Djava.util.logging.config.class=LoggerConfig.class</argLine>
 			  </configuration>
 			</plugin>
 

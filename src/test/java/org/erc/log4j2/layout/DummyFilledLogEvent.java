@@ -183,7 +183,7 @@ public class DummyFilledLogEvent extends AbstractLogEvent {
     @Override
     public Map<String, String> getContextMap() {
         // Deprecated skip usage
-        return null;
+        return contextMap.getCopy();
     }
 
     /**
