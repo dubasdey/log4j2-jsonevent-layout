@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dubasdey</groupId>
 	<artifactId>log4j2-jsonevent-layout</artifactId>
-	<version>0.0.8</version>
+	<version>0.1.0</version>
 	<name>log4j2-jsonevent-layout</name>
 	<description>Log4j2 JSON Event layout without third party dependencies</description>
 	<url>https://github.com/dubasdey/log4j2-jsonevent-layout</url>
@@ -17,7 +17,14 @@
 	        <distribution>repo</distribution>
 	    </license>
 	</licenses>
-	
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub OWNER Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/dubasdey/log4j2-jsonevent-layout</url>
+		</repository>
+	</distributionManagement>
+
 	<scm>
     	<url>https://github.com/dubasdey/log4j2-jsonevent-layout</url>
     	<connection>scm:git:git://github.com/dubasdey/log4j2-jsonevent-layout.git</connection>
@@ -30,22 +37,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<distributionManagement>
-	    <snapshotRepository>
-	        <id>ossrh</id>
-	        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-	    </snapshotRepository>
- 		<repository>
-      		<id>ossrh</id>
-      		<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    	</repository>	    
-	</distributionManagement>
-	
 	<developers>
 	    <developer>
-	        <id>erodriguez</id>
-	        <name>Eduardo Rodríguez</name>
-	        <email>eduardo@rodriguezcarro.es</email>
+	        <id>dubasdey</id>
+			<url>https://github.com/dubasdey</url>
 	    </developer>
 	</developers>
 	
@@ -153,39 +148,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                        <configuration>
-							<gpgArguments>
-                                <arg>--pinentry-mode</arg>
-                                <arg>loopback</arg>
-                            </gpgArguments> 
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-	                
-	        <plugin>
-	            <groupId>org.sonatype.plugins</groupId>
-	            <artifactId>nexus-staging-maven-plugin</artifactId>
-	            <version>1.6.12</version>
-	            <extensions>true</extensions>
-	            <configuration>
-	                <serverId>ossrh</serverId>
-	                <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-	                <autoReleaseAfterClose>true</autoReleaseAfterClose>
-	            </configuration>
-	        </plugin>
 		</plugins>
 	</build>	
 </project>
