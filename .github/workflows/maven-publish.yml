@@ -23,6 +23,8 @@ jobs:
         distribution: 'temurin'
         server-id: github
         settings-path: ${{github.workspace}}/.github # lubocation for the settings.xml file
+        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+        gpg-passphrase: GPG_PASSPHRASE
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
