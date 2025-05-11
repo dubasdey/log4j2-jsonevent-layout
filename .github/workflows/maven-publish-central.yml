@@ -1,4 +1,4 @@
-name: "Publish"
+name: "Publish Central"
 
 on:
   release:
@@ -21,7 +21,9 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-        server-id: github
+        server-id: central
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_USERTOKEN
         settings-path: ${{github.workspace}}/.github # lubocation for the settings.xml file
         gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
         gpg-passphrase: GPG_PASSPHRASE
@@ -35,13 +37,6 @@ jobs:
          MAVEN_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
          MAVEN_USERTOKEN: ${{ secrets.CENTRAL_PASSWORD }}
          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn -B deploy -Dmaven.test.skip=true -P github -s $GITHUB_WORKSPACE/.github/settings.xml
-      env:
-        GITHUB_TOKEN: ${{github.token}}
-        MAVEN_USERNAME: ${{ secrets.GUSERNAME }}
-        MAVEN_PASSWORD: ${{ secrets.GTOKEN }}
 
     - name: Publish to Maven central
       run: mvn -B deploy -Dmaven.test.skip=true -P central -s $GITHUB_WORKSPACE/.github/settings.xml
