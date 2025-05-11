@@ -78,11 +78,9 @@ Example:
 <dependency>
   <groupId>com.github.dubasdey</groupId>
   <artifactId>log4j2-jsonevent-layout</artifactId>
-  <version>0.0.7</version>
+  <version>0.1.0</version>
 </dependency>
 ```
-
-
 
 
 ## Donate
