@@ -32,5 +32,6 @@ jobs:
               env:
                 MAVEN_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
                 MAVEN_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+                MAVEN_USERTOKEN: ${{ secrets.CENTRAL_PASSWORD }}
                 SIGN_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
                 SIGN_KEY_PASS: ${{ secrets.GPG_PASSPHRASE }}

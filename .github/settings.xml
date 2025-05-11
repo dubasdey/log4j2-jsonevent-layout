@@ -26,25 +26,19 @@
     </profile>
     <profile>
       <id>central</id>
-      <repositories>
-        <repository>
-          <id>central</id>
-          <url>https://repo1.maven.org/maven2</url>
-        </repository>
-      </repositories>
     </profile>
   </profiles>
 
   <servers>
     <server>
       <id>github</id>
-      <username>${{ GUSERNAME }}</username>
-      <password>${{ GTOKEN }}</password>
+      <username>${{ secrets.GUSERNAME }}</username>
+      <password>${{ secrets.GTOKEN }}</password>
     </server>
     <server>
       <id>central</id>
-      <username>${{ MAVEN_USERNAME }}</username>
-      <password>${{ MAVEN_PASSWORD }}</password>
+      <username>${{ secrets.CENTRAL_USERNAME }}</username>
+      <password>${{ secrets.CENTRAL_PASSWORD }}</password>
     </server>
   </servers>
 </settings>
